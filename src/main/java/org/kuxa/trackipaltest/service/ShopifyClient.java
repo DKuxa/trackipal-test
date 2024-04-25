@@ -1,4 +1,4 @@
-package org.Kuxa.trackipal.service;
+package org.kuxa.trackipaltest.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
