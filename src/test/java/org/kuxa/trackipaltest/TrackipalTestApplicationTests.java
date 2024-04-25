@@ -9,5 +9,4 @@ class TrackipalTestApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

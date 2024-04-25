@@ -9,7 +9,7 @@
 		<version>3.2.4</version>
 		<relativePath/>
 	</parent>
-	<groupId>org.Kuxa</groupId>
+	<groupId>org.kuxa</groupId>
 	<artifactId>trackipal-test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>trackipal-test</name>
@@ -52,29 +52,32 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Lombok -->
+		<!-- Lombok, the version is controlled by Spring Boot -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.32</version>
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- PostgreSQL JDBC Driver -->
+		<!-- PostgreSQL JDBC Driver, version controlled by Spring Boot -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
