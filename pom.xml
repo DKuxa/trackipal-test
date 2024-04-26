@@ -52,6 +52,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Mockito for mocking in tests -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
 		<!-- Lombok, the version is controlled by Spring Boot -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -65,6 +72,12 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
