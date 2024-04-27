@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderService {
-    private static final Logger log = LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository orderRepository;
     private final ShopifyClient shopifyClient;
 
@@ -26,17 +25,19 @@ public class OrderService {
         this.shopifyClient = shopifyClient;
     }
 
-    public List<Order> listAllOrders() {
+    public List<Order> listAllOrders() throws JsonProcessingException {
         ResponseEntity<String> response = shopifyClient.getAllOrders();
         ObjectMapper objectMapper = new ObjectMapper();
+        OrderResponseWrapper wrapper = objectMapper.readValue(response.getBody(), OrderResponseWrapper.class);
+        return wrapper.getOrders();
+    }
 
-        try {
-            OrderResponseWrapper wrapper = objectMapper.readValue(response.getBody(), OrderResponseWrapper.class);
-            return wrapper.getOrders();
-        } catch (JsonProcessingException e) {
-            log.error("Error processing JSON", e);
-            return Collections.emptyList();
+
+    public void markOrderAsFulfilled(Long orderId, String trackingCode) throws Exception {
+        if (!shopifyClient.orderExists(orderId)) {
+            throw new NoSuchElementException("Order not found");
         }
+        shopifyClient.fulfillOrderInShopify(orderId, trackingCode);
     }
 
 }

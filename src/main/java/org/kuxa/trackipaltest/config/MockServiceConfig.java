@@ -1,4 +1,5 @@
 package org.kuxa.trackipaltest.config;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.kuxa.trackipaltest.service.OrderService;
 import org.kuxa.trackipaltest.model.Order;
 import org.springframework.context.annotation.Bean;
@@ -15,28 +16,29 @@ import java.util.List;
 public class MockServiceConfig {
 
     @Bean
-    public OrderService orderService() {
+    public OrderService orderService() throws JsonProcessingException {
         OrderService mockService = mock(OrderService.class);
 
+        // Create mock data that corresponds to the example Shopify response
         Order mockOrder1 = new Order();
-        mockOrder1.setId(1L);
-        mockOrder1.setOrderNumber(123L);
+        mockOrder1.setShopifyOrderId(450789469L);
+        mockOrder1.setOrderNumber("#1001");
         mockOrder1.setOrderDate(new Date());
-        mockOrder1.setTotal(100.00);
-        mockOrder1.setFinancialStatus("Paid");
-        mockOrder1.setFulfillmentStatus("Fulfilled");
-        mockOrder1.setFulfilled(true);
-        mockOrder1.setTrackingCode("12345");
+        mockOrder1.setTotal(199.65);
+        mockOrder1.setFinancialStatus("partially_refunded");
+        mockOrder1.setFulfillmentStatus(null);
+        mockOrder1.setFulfilled(false);
+        mockOrder1.setTrackingCode(null);
 
         Order mockOrder2 = new Order();
-        mockOrder2.setId(2L);
-        mockOrder2.setOrderNumber(456L);
+        mockOrder2.setShopifyOrderId(450789470L);
+        mockOrder2.setOrderNumber("#1002");
         mockOrder2.setOrderDate(new Date());
-        mockOrder2.setTotal(200.00);
-        mockOrder2.setFinancialStatus("Pending");
-        mockOrder2.setFulfillmentStatus("Unfulfilled");
-        mockOrder2.setFulfilled(false);
-        mockOrder2.setTrackingCode(null);
+        mockOrder2.setTotal(299.99);
+        mockOrder2.setFinancialStatus("paid");
+        mockOrder2.setFulfillmentStatus("fulfilled");
+        mockOrder2.setFulfilled(true);
+        mockOrder2.setTrackingCode("1Z2345");
 
         List<Order> mockOrders = Arrays.asList(mockOrder1, mockOrder2);
 

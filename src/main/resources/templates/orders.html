@@ -8,7 +8,7 @@
 <body>
 <div class="container mt-5">
     <h2>Shopify Orders</h2>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="ordersTable">
         <thead class="thead-dark">
         <tr>
             <th>Order Number</th>
@@ -16,6 +16,7 @@
             <th>Total</th>
             <th>Fulfilled Status</th>
             <th>Tracking Code</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -23,14 +24,68 @@
             <td th:text="${order.orderNumber}">Order Number</td>
             <td th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy')}">Order Date</td>
             <td th:text="${order.total}">Total</td>
-            <td th:text="${order.fulfilled ? 'Yes' : 'No'}">Fulfilled Status</td>
+            <td th:text="${order.isFulfilled() ? 'Yes' : 'No'}">Fulfilled Status</td>
             <td th:text="${order.trackingCode}">Tracking Code</td>
+            <td>
+                <div th:if="${!order.isFulfilled()}">
+                    <!-- Form to submit tracking code and fulfill order with AJAX -->
+                    <form class="fulfillForm" th:action="@{'/orders/' + ${order.shopifyOrderId} + '/fulfill'}" th:data-order-id="${order.shopifyOrderId}" method="post">
+                        <input type="text" class="trackingCodeInput" name="trackingCode" placeholder="Enter tracking code" required="required" />
+                        <button type="button" class="btn btn-primary btn-sm fulfillOrderButton">Fulfill Order</button>
+                    </form>
+                </div>
+                <div th:if="${order.isFulfilled()}">
+                    <span>Order Fulfilled</span>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Add this div for the success message in your HTML -->
+<div class="modal" tabindex="-1" role="dialog" id="successModal" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Order fulfilled successfully</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.fulfillOrderButton').click(function() {
+            var button = $(this);
+            var form = button.closest('form');
+            var orderId = form.data('order-id');
+            var trackingCode = form.find('.trackingCodeInput').val();
+            var url = form.attr('action');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {trackingCode: trackingCode},
+                success: function(response) {
+                    // Show the success message
+                    var successModal = $('#successModal');
+                    successModal.find('.modal-body p').text(response);
+                    successModal.modal('show');
+
+                    var row = button.closest('tr');
+                    row.find('td').eq(3).text('Order Fulfilled');
+                    form.replaceWith('<span>Yes</span>');
+                },
+                error: function(xhr, status, error) {
+                    var errorMsg = xhr.responseJSON ? xhr.responseJSON.message : (xhr.responseText || "An unknown error occurred");
+                    alert("Error fulfilling order: " + errorMsg);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
