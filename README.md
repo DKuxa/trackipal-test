@@ -94,4 +94,23 @@ mvn integration-test
 - [Spring Boot](https://spring.io/projects/spring-boot) - The framework used
 - [Maven](https://maven.apache.org/) - Dependency Management
 
+## Icebox
+
+The following features and improvements are planned for future development:
+
+1. **Automated Testing Enhancements**
+- Complete the automated tests for pagination when retrieving orders from the Shopify API. This will ensure the application can handle large volumes of orders efficiently. 
+- Develop automated tests for handling Shopify API errors, including rate limits. This will improve the robustness of the application by ensuring it handles API constraints gracefully.
+
+2. **Additional Order Management Features**
+- Implement features such as cancelling orders, modifying orders, and more detailed filtering/sorting options for better order management.
+
+3. **Performance Optimization**
+- Investigate and implement performance optimizations, particularly in data handling and API interaction to improve response times and scalability.
+
+4. **User Interface Improvements**
+- Enhance the user interface for a more intuitive and responsive user experience, incorporating real-time updates and mobile compatibility.
+
+These items are acknowledged as important but were not addressed in the initial development phase due to time constraints or current priorities.
+
 
