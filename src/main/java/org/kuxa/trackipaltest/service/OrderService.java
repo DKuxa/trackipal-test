@@ -16,12 +16,9 @@ import java.util.NoSuchElementException;
 
 @Service
 public class OrderService {
-    private final OrderRepository orderRepository;
     private final ShopifyClient shopifyClient;
-
     @Autowired
-    public OrderService(OrderRepository orderRepository, ShopifyClient shopifyClient) {
-        this.orderRepository = orderRepository;
+    public OrderService(ShopifyClient shopifyClient) {
         this.shopifyClient = shopifyClient;
     }
 
