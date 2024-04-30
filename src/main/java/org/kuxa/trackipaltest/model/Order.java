@@ -3,7 +3,6 @@ package org.kuxa.trackipaltest.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,13 +10,10 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "orders")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Order {
 
-    @Id
     @JsonProperty("id")
     private Long shopifyOrderId;
 
@@ -25,7 +21,6 @@ public class Order {
     private String orderNumber;
 
     @JsonProperty("created_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
     @JsonProperty("total_price")
@@ -37,7 +32,6 @@ public class Order {
     @JsonProperty("fulfillment_status")
     private String fulfillmentStatus;
 
-    @Transient
     public boolean isFulfilled() {
         return "fulfilled".equalsIgnoreCase(fulfillmentStatus);
     }
@@ -46,7 +40,6 @@ public class Order {
         this.fulfillmentStatus = isFulfilled ? "fulfilled" : "unfulfilled";
     }
 
-    @Transient
     private String trackingCode;
 
     // Custom constructor if needed for specific initialization
